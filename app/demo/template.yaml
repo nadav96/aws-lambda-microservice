@@ -1,0 +1,16 @@
+Name: DemoFunction
+IsApi: True
+IsAuthenticated: False
+ExcludeSecurity: False
+CodeUri: ../build/demo.zip
+Environment:
+  Variables:
+    demo: 1
+Events:
+  Main:
+    Type: Api
+    Properties:
+      Path: /demo
+      Method: get
+      RestApiId:
+        Ref: ApiGateway

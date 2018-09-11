@@ -1,0 +1,5 @@
+{
+  "demo": {
+    "aws_environment": "sam_local"
+  }
+}
