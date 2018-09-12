@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-buildDir="./build"
-appDir="./app"
+buildDir=$(pwd)/build
+appDir=$(pwd)/app
 
 checkForDependencies () {
     # $1 function name
@@ -23,7 +23,7 @@ checkForDependencies () {
         # If module exist, copy it.
         moduleFilePath=${appDir}/common/${2}.py
         if [ -f ${moduleFilePath} ]; then
-            cp ${moduleFilePath} ${appDir}/$1/common/
+            ln -s ${moduleFilePath} ${appDir}/$1/common/
         else
             echo "### No module for dependency ${2}"
         fi
@@ -37,7 +37,7 @@ checkForDependencies () {
     # This will loop on the dependency dependencies!
     for dependency in `cat ${dependenciesFilePath}`; do
         checkForDependencies $1 ${dependency} $(($3 + 1))
-        cp ${appDir}/common/${dependency}.py ${appDir}/$1/common/
+        ln -s ${appDir}/common/${dependency}.py ${appDir}/$1/common/
     done
 
 }
