@@ -2,7 +2,6 @@ Name: DemoFunction
 IsApi: True
 IsAuthenticated: False
 ExcludeSecurity: False
-CodeUri: ../build/demo.zip
 Environment:
   Variables:
     demo: 1

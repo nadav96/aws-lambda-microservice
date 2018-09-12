@@ -3,7 +3,7 @@ import sys
 import os
 from shutil import copyfile
 
-function_path = sys.argv[1]
+function_folder_name = sys.argv[1]
 app_dir = "./app"
 build_dir = "./build"
 
@@ -11,11 +11,11 @@ if not os.path.exists("{}/template.yaml".format(build_dir)):
     print "Created blank template"
     copyfile("{}/template-skeleton.yaml".format(app_dir), "{}/template.yaml".format(build_dir))
 
-with file("{}/{}/template.yaml".format(app_dir, function_path)) as f:
+with file("{}/{}/template.yaml".format(app_dir, function_folder_name)) as f:
     function_template = yaml.load(f)
 
 function_name = function_template["Name"]
-code_uri = function_template["CodeUri"]
+code_uri = "../build/{}.zip".format(function_folder_name)
 is_api = function_template["IsApi"]
 is_authenticated = function_template["IsAuthenticated"]
 exclude_security = function_template["ExcludeSecurity"]
