@@ -10,6 +10,7 @@ This is a sample template for sam-app - Below is a brief explanation of what we 
 │   │   ├── common_dependencies.txt - A list of files which the function needs from the common folder (can include sub folders in the common folder as well).
 │   │   ├── requirements.txt - the python modules needs by the function
 │   │   ├── function.py - the function code itself
+│   │   ├── function-test.py - executed by the test script, test the core of the function, and return exit code (0 is success)
 │   │   └── template.yaml - the template instructions for the function (will be use to append to the resulting template the function part)
 │   ├── template-skeleton.yaml - the skeleton of the final template file use to deploy to aws
 │   └── common - shared libraries across the functions in the app
@@ -29,6 +30,8 @@ This is a sample template for sam-app - Below is a brief explanation of what we 
 * run **python ./script/build_template.py** to append to the already built template in the build folder the function template requirements (or create if doesn't exist, from the skeleton)
 * run **./script/build_template_all.sh** to run build_template.py on all of the project functions
 * run **./script/package.sh** deploy the project to aws (pulling the stack name and storage bucket name from the package folder, if not existed the script create the env files and exit).
+* run **./script/sam-start.sh** Start the local server with the functions
+* run **./script/test_function_all.sh** Execute all of the functions function-test.py scripts, report success and failures.
 
 Special note: the deploy script only deploy changed functions, or template changes, to change function, one must build it again.
 
