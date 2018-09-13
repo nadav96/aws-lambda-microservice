@@ -13,6 +13,7 @@ if [ -f ${stack_name_file} ] && [ -f ${storage_bucket_name_file} ]; then
     sam deploy --template-file ./build/packaged.yaml --stack-name ${stack_name} --capabilities CAPABILITY_IAM
 else
     echo "Missing package details, creating defaults in package folder"
+    mkdir -p ./package
     echo "STACK_NAME" > ${stack_name_file}
     echo "BUCKET_NAME" > ${storage_bucket_name_file}
 fi
