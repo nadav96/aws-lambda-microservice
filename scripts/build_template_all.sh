@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+
+echo "{}" > ./sam_local_env.json
+
 for file_path in ./app/*
 do
     app_name=${file_path##*/}

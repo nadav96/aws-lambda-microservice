@@ -7,6 +7,8 @@
     <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scripts/sam-start.sh" />
     <option name="PARAMETERS" value="" />
     <module name="" />
-    <method />
+    <method>
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="build_template" run_configuration_type="BashConfigurationType" />
+    </method>
   </configuration>
 </component>

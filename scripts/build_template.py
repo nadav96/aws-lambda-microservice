@@ -1,6 +1,7 @@
 import yaml
 import sys
 import os
+import json
 from shutil import copyfile
 
 function_folder_name = sys.argv[1]
@@ -29,6 +30,16 @@ if is_api is True:
     api_data = function_template["Events"]["Main"]["Properties"]
     api_path = api_data["Path"]
     api_method = api_data["Method"]
+
+with file("./sam_local_env.json") as f:
+    env_json = json.loads(f.read())
+    if function_name not in env_json:
+        env_json[function_name] = {
+            "aws_environment": "sam_local"
+        }
+        output = open("./sam_local_env.json", "w")
+        json.dump(env_json, output)
+        output.close()
 
 with file("{}/template.yaml".format(build_dir)) as f:
     full_template = yaml.load(f)
