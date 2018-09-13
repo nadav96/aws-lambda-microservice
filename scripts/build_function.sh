@@ -11,6 +11,7 @@ checkForDependencies () {
     dependenciesFilePath=${appDir}/$1/common_dependencies.txt
     if [ $2 ]; then
         # print the dependency tree nicely
+        echo -n "   *"
         for i in `seq 1 ${3}`; do
             echo -n "-"
         done
@@ -23,9 +24,9 @@ checkForDependencies () {
         # If module exist, copy it.
         moduleFilePath=${appDir}/common/${2}.py
         if [ -f ${moduleFilePath} ]; then
-            ln -s ${moduleFilePath} ${appDir}/$1/common/
+            ln -sf ${moduleFilePath} ${appDir}/$1/common/
         else
-            echo "### No module for dependency ${2}"
+            echo "  ### No module for dependency ${2}"
         fi
     fi
 
@@ -37,7 +38,7 @@ checkForDependencies () {
     # This will loop on the dependency dependencies!
     for dependency in `cat ${dependenciesFilePath}`; do
         checkForDependencies $1 ${dependency} $(($3 + 1))
-        ln -s ${appDir}/common/${dependency}.py ${appDir}/$1/common/
+        ln -sf ${appDir}/common/${dependency}.py ${appDir}/$1/common/
     done
 
 }
@@ -47,7 +48,7 @@ mkdir -p ${appDir}/$1/common
 rm ${appDir}/$1/common/*
 touch ${appDir}/$1/common/__init__.py
 
-echo "dependencies tree for ${1}:"
+echo "  [B] dependencies tree for ${1}:"
 checkForDependencies $1
 
 echo
@@ -60,7 +61,8 @@ rm ${buildDir}/$1/*.txt 2>/dev/null
 
 # navigate to the target dir
 cd ${buildDir}/$1
-zip -r ../${1}.zip *
+zip -r ../${1}.zip * > /dev/null
+echo "  [B] zipped the function"
 
 # Return to root
 cd ../../

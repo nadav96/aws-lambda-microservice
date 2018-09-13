@@ -26,7 +26,7 @@ This is a sample template for sam-app - Below is a brief explanation of what we 
 * run **./scripts/docker/docker-configure.sh** script (to set up the docker env for the app).
 * run **./script/docker-install.sh** use the install.sh script and run it inside docker. the install script loop through all of the project functions and populate their python dependencies.
 * run **./script/build_function.sh** build a specific function (in the build folder, python dependencies not included and should be already available).
-* run **./script/build_all.sh** to run the build_function on all of the project functions.
+* run **./script/build_all.sh** to run the build_function on all of the project functions (compute hash, only changed functions will be rebuilt).
 * run **python ./script/build_template.py** to append to the already built template in the build folder the function template requirements (or create if doesn't exist, from the skeleton)
 * run **./script/build_template_all.sh** to run build_template.py on all of the project functions
 * run **./script/package.sh** deploy the project to aws (pulling the stack name and storage bucket name from the package folder, if not existed the script create the env files and exit).
