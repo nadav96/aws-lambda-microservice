@@ -17,9 +17,8 @@ function_dir_path = "./app/{}/".format(function_folder_name)
 function_common_dir_path = "{}/common".format(function_dir_path)
 
 function_file_hash = md5("{}/function.py".format(function_dir_path))
-common_dependency_hash = md5("{}/common_dependencies.txt".format(function_dir_path))
 
-xor_result = ''.join(chr(ord(a) ^ ord(b)) for a, b in zip(function_file_hash, common_dependency_hash))
+xor_result = function_file_hash
 
 if os.path.exists(function_common_dir_path):
     for filename in os.listdir(function_common_dir_path):

@@ -7,8 +7,6 @@ checkForDependencies () {
     # $2 dependency name (if empty will download all)
     # $3 level (for debugging)
 
-    # The function default dependencies file
-    dependenciesFilePath=${appDir}/$1/common_dependencies.txt
     if [ $2 ]; then
         # print the dependency tree nicely
         echo -n "   *"
@@ -18,29 +16,48 @@ checkForDependencies () {
         echo -n " ${2}"
         echo
 
-        # If file was supplied, this will hold the
-        dependenciesFilePath=${appDir}/common/${2}_dependencies.txt
-
-        # If module exist, copy it.
+        # If module exist, link it.
         moduleFilePath=${appDir}/common/${2}.py
+
+        # First, copy the module itself
         if [ -f ${moduleFilePath} ]; then
             ln -sf ${moduleFilePath} ${appDir}/$1/common/
         else
             echo "  ### No module for dependency ${2}"
+            return 0
+        fi
+
+        # After the module was linked successfully, check for dependencies.
+        dependencyLine=$(head -n 1 ${moduleFilePath})
+        if [[ ${dependencyLine} = "# DI:"* ]]; then
+            moduleDependencies="${dependencyLine#*:}"
+        else
+            # If the dependencies file doesn't exist, exit the function.
+            return 0
+        fi
+    else
+        # No dependency supplied in the function args, means it's root caller, fetch the function first dependencies
+        functionFilePath=${appDir}/$1/function.py
+
+        dependencyLine=$(head -n 1 ${functionFilePath})
+
+        if [[ ${dependencyLine} = "# DI:"* ]]; then
+            moduleDependencies="${dependencyLine#*:}"
+        else
+            # If the dependencies file doesn't exist, exit the function.
+            return 0
         fi
     fi
 
-    if [ ! -f ${dependenciesFilePath} ]; then
-        # If the dependencies file doesn't exist, exit the function.
+    if [ -z "$moduleDependencies" ]; then
+        # If the dependencies variable doesn't exist, exit the function.
         return 0
     fi
 
     # This will loop on the dependency dependencies!
-    for dependency in `cat ${dependenciesFilePath}`; do
+    for dependency in ${moduleDependencies}; do
         checkForDependencies $1 ${dependency} $(($3 + 1))
-        ln -sf ${appDir}/common/${dependency}.py ${appDir}/$1/common/
     done
-
 }
 
 mkdir -p ${appDir}/$1/common

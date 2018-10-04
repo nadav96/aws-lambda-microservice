@@ -1,3 +1,6 @@
+# DI:demo/hello
+
+
 import json
 from common.hello import hello
 from common.fire import fire
