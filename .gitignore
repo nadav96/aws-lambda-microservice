@@ -1,3 +1,5 @@
+sam_auth_resources.json
+sam_local_env.json
 build
 .idea/*
 !.idea/runConfigurations

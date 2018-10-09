@@ -19,6 +19,12 @@ function_name = function_template["Name"]
 code_uri = "../build/{}.zip".format(function_folder_name)
 is_api = function_template["IsApi"]
 is_authenticated = function_template["IsAuthenticated"]
+
+if "AuthenticationLevel" in function_template:
+    authentication_level = function_template["AuthenticationLevel"]
+else:
+    authentication_level = "GuestResource"
+
 exclude_security = function_template["ExcludeSecurity"]
 
 api_path = None
@@ -40,6 +46,9 @@ with file("./sam_local_env.json") as f:
         output = open("./sam_local_env.json", "w")
         json.dump(env_json, output)
         output.close()
+
+with file("./sam_auth_resources.json") as f:
+    auth_resources = json.loads(f.read())
 
 with file("{}/template.yaml".format(build_dir)) as f:
     full_template = yaml.load(f)
@@ -84,9 +93,22 @@ if is_api is True:
             }
         ]
 
+        if authentication_level in auth_resources:
+            level_endpoints = auth_resources[authentication_level]
+        else:
+            level_endpoints = []
+        level_endpoints.append(api_path)
+
+        auth_resources[authentication_level] = level_endpoints
+
     full_template["Resources"]["ApiGateway"]["Properties"]["DefinitionBody"]["paths"][api_path] = function_api_result
 
 with file('{}/template.yaml'.format(build_dir), 'w') as out:
     yaml.dump(full_template, out, default_flow_style=False)
+    out.close()
+
+with file("./sam_auth_resources.json", 'w') as out:
+    json.dump(auth_resources, out)
+    out.close()
 
 print "Finished adding {}".format(function_name)

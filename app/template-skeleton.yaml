@@ -8,6 +8,9 @@ Description: >
 Globals:
     Function:
         Timeout: 3
+        Environment:
+          Variables:
+            a: 1
 
 Resources:
     ApiGateway:

@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 echo "{}" > ./sam_local_env.json
+echo "{}" > ./sam_auth_resources.json
+rm ./build/template.yaml
 
 for file_path in ./app/*
 do
@@ -9,3 +11,5 @@ do
         python ./scripts/build_template.py ${app_name}
     fi
 done
+
+python ./scripts/template_authlevels.py
