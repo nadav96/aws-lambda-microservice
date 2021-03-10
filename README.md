@@ -1,3 +1,7 @@
+## Deprecated
+Use the more robust open source tool [Rocketsam](https://www.npmjs.com/package/rocketsam)
+
+
 # sam-app lambda micro service skeleton
 
 This is a sample template for sam-app - Below is a brief explanation of what we have generated for you:
